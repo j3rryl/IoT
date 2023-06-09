@@ -1,0 +1,101 @@
+[
+    {
+        "id": "4c42c9cc1e388240",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "708bd8f4eebf5eaf",
+        "type": "debug",
+        "z": "4c42c9cc1e388240",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "d749ab7041aa65a3",
+        "type": "inject",
+        "z": "4c42c9cc1e388240",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 200,
+        "wires": [
+            [
+                "232a842d3870b77d"
+            ]
+        ]
+    },
+    {
+        "id": "67876e99d722f7f8",
+        "type": "function",
+        "z": "4c42c9cc1e388240",
+        "name": "function 1",
+        "func": "var date = new Date(msg.payload);\nmsg.payload = date.toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 200,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "232a842d3870b77d",
+        "type": "function",
+        "z": "4c42c9cc1e388240",
+        "name": "myName",
+        "func": "var name = \"Jeremy Munroe\";\nmsg.payload = name;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 200,
+        "y": 80,
+        "wires": [
+            [
+                "708bd8f4eebf5eaf"
+            ]
+        ]
+    },
+    {
+        "id": "a1749a08e77ae173",
+        "type": "comment",
+        "z": "4c42c9cc1e388240",
+        "name": "",
+        "info": "Jeremy Munroe 136276 9th June 2023",
+        "x": 180,
+        "y": 440,
+        "wires": []
+    }
+]

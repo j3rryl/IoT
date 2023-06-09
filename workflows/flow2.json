@@ -1,0 +1,181 @@
+[
+    {
+        "id": "4c42c9cc1e388240",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d749ab7041aa65a3",
+        "type": "inject",
+        "z": "4c42c9cc1e388240",
+        "name": "Inject Node",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "300",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 200,
+        "wires": [
+            [
+                "e815fe313f64aa92"
+            ]
+        ]
+    },
+    {
+        "id": "e815fe313f64aa92",
+        "type": "http request",
+        "z": "4c42c9cc1e388240",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.csv",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 290,
+        "y": 200,
+        "wires": [
+            [
+                "edb04eb9549b5362"
+            ]
+        ]
+    },
+    {
+        "id": "edb04eb9549b5362",
+        "type": "csv",
+        "z": "4c42c9cc1e388240",
+        "name": "",
+        "sep": ",",
+        "hdrin": true,
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 450,
+        "y": 200,
+        "wires": [
+            [
+                "ccf7951b84f032a3",
+                "9035a4fe163c1d59"
+            ]
+        ]
+    },
+    {
+        "id": "9035a4fe163c1d59",
+        "type": "debug",
+        "z": "4c42c9cc1e388240",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "1e560592979ef43c",
+        "type": "change",
+        "z": "4c42c9cc1e388240",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "PANIC!",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 620,
+        "y": 340,
+        "wires": [
+            [
+                "3b6730c2302e3522"
+            ]
+        ]
+    },
+    {
+        "id": "ccf7951b84f032a3",
+        "type": "switch",
+        "z": "4c42c9cc1e388240",
+        "name": "",
+        "property": "payload.mag",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "7",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 450,
+        "y": 340,
+        "wires": [
+            [
+                "1e560592979ef43c"
+            ]
+        ]
+    },
+    {
+        "id": "3b6730c2302e3522",
+        "type": "debug",
+        "z": "4c42c9cc1e388240",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "a1749a08e77ae173",
+        "type": "comment",
+        "z": "4c42c9cc1e388240",
+        "name": "",
+        "info": "Jeremy Munroe 136276 9th June 2023",
+        "x": 180,
+        "y": 440,
+        "wires": []
+    }
+]
