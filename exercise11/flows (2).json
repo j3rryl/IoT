@@ -1,0 +1,186 @@
+[
+    {
+        "id": "c84333ded13f6db7",
+        "type": "tab",
+        "label": "influxdb",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "9e961ead648d1507",
+        "type": "Stackhero-InfluxDB-v2-query",
+        "z": "c84333ded13f6db7",
+        "server": "62da3262f3a859bd",
+        "name": "",
+        "x": 370,
+        "y": 140,
+        "wires": [
+            [
+                "31a7c33452c801ca"
+            ]
+        ]
+    },
+    {
+        "id": "31a7c33452c801ca",
+        "type": "function",
+        "z": "c84333ded13f6db7",
+        "name": "setQuery",
+        "func": "msg.topic = 'from(bucket: \"su_bucket\") |> range(start: -1d)';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 140,
+        "wires": [
+            [
+                "9e0c33866c2156e6"
+            ]
+        ]
+    },
+    {
+        "id": "9e0c33866c2156e6",
+        "type": "debug",
+        "z": "c84333ded13f6db7",
+        "name": "output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "9f538c5efaef3bb2",
+        "type": "inject",
+        "z": "c84333ded13f6db7",
+        "name": "inject",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 90,
+        "y": 140,
+        "wires": [
+            [
+                "9e961ead648d1507"
+            ]
+        ]
+    },
+    {
+        "id": "9288a90b0a9af58b",
+        "type": "function",
+        "z": "c84333ded13f6db7",
+        "name": "randomGenerator",
+        "func": "function getRandomInt(min=1, max=1000){\n    min = Math.ceil(min);\n    max = Math.floor(max);\n\n    return Math.floor(Math.random() * (max-min)) + min;\n};\nvar val_1 = getRandomInt();\nvar val_2 = getRandomInt();\nvar val_3 = getRandomInt();\nvar val_4 = getRandomInt();\n\nmsg.payload = [val_1, val_2, val_3, val_4];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 280,
+        "wires": [
+            [
+                "9a13037dc76aa1e0"
+            ]
+        ]
+    },
+    {
+        "id": "9a13037dc76aa1e0",
+        "type": "function",
+        "z": "c84333ded13f6db7",
+        "name": "setWrite",
+        "func": "var sensor_data = msg.payload;\nmsg.payload = {\n    bucket: 'iot_bucket',\n    precision: 'ms',\n    data: {\n        measurement: 'testSensor',\n        tags: {\n            deviceId: 'su23',\n            location: 'Nairobi'\n        },\n        fields: {\n            temperature: sensor_data[0],\n            humidity: sensor_data[1],\n            vibrations: sensor_data[3],\n            batteryVoltage: (sensor_data[3]/20)\n        },\n        timestamp: Date.now()\n    },\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 280,
+        "wires": [
+            [
+                "94d9766fa6b7eb62"
+            ]
+        ]
+    },
+    {
+        "id": "f7df42dbe0e1b862",
+        "type": "inject",
+        "z": "c84333ded13f6db7",
+        "name": "inject",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 90,
+        "y": 280,
+        "wires": [
+            [
+                "9288a90b0a9af58b"
+            ]
+        ]
+    },
+    {
+        "id": "94d9766fa6b7eb62",
+        "type": "Stackhero-InfluxDB-v2-write",
+        "z": "c84333ded13f6db7",
+        "server": "62da3262f3a859bd",
+        "name": "",
+        "x": 770,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4fdcd2c5e3492af6",
+        "type": "comment",
+        "z": "c84333ded13f6db7",
+        "name": "Jeremy Munroe",
+        "info": "136276 Jeremy Munroe ICS 4B",
+        "x": 160,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "62da3262f3a859bd",
+        "type": "Stackhero-InfluxDB-v2-Server",
+        "name": "influxdb-server",
+        "host": "localhost",
+        "port": "8086",
+        "tls": false
+    }
+]
